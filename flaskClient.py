@@ -106,6 +106,15 @@ def sendMessage(otherUser,sendingMessage):
         client_socket.send(hdr + to + messh + encM)
         print("message sent")
 
+# update the dynamic tables
+@app.route('/_update', methods = ['GET'])
+def update():
+    mess = []
+    for x in message.find({}, {"_id":0}):
+        mess.append(x)
+
+    return jsonify(pack = mess[-1])
+
 @app.route('/mainChatPage', methods=['GET','POST'])
 def mainChatPage():
     print('the main page endpoint executed')
@@ -120,8 +129,11 @@ def mainChatPage():
     sendMessage(otherUser, sendingMessage)
 
     #Storing Messages
-    message.insert({'from':my_username, 'To':otherUser, 'Message':sendingMessage})
-    print("message inserted")
+    if otherUser == None or sendingMessage == None:
+        print("dumping nonetype values")
+    else:
+        message.insert({'from':my_username, 'To':otherUser, 'Message':sendingMessage})
+        print("message inserted")
 
     #retrieving messages
     for fetch in message.find():
