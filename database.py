@@ -25,4 +25,5 @@ mess = []
 for x in messages.find({}, {"_id":0}):
     mess.append(x)
 
-print(mess[0]['Message'])
+
+print(mess[-1])

@@ -106,14 +106,22 @@ def sendMessage(otherUser,sendingMessage):
         client_socket.send(hdr + to + messh + encM)
         print("message sent")
 
+#Retrieving the messages from the database
+def fetchMessage():
+    mess = []
+    for x in message.find({},{"_id":0}):
+        mess.append(x['Message'])
+
+    return mess
+
 # update the dynamic tables
 @app.route('/_update', methods = ['GET'])
 def update():
-    mess = []
-    for x in message.find({}, {"_id":0}):
-        mess.append(x)
-
-    return jsonify(pack = mess[-1])
+    sess = []
+    for y in message.find({}, {"_id":0}):
+        sess.append(y)
+        
+    return jsonify(pack = sess[-1])
 
 @app.route('/mainChatPage', methods=['GET','POST'])
 def mainChatPage():
@@ -136,8 +144,7 @@ def mainChatPage():
         print("message inserted")
 
     #retrieving messages
-    for fetch in message.find():
-        get = fetch
+    flask_msg = fetchMessage()
 
 
 
@@ -176,7 +183,7 @@ def mainChatPage():
     
         
     print('executing the main page html')
-    return render_template("testing_chat_module.html",tag = connectionList,message = get,username = my_username,otherUser = otherUser)
+    return render_template("testing_chat_module.html",tag = connectionList,message = flask_msg,username = my_username,otherUser = otherUser)
 
 
 
