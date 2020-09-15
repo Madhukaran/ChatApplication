@@ -1,0 +1,48 @@
+<html>
+<head>
+  <!-- CSS only -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <style>
+    body{
+        background: #0264d6; /* Old browsers */
+    background: -moz-radial-gradient(center, ellipse cover,  #0264d6 1%, #1c2b5a 100%); /* FF3.6+ */
+    background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(1%,#0264d6), color-stop(100%,#1c2b5a)); /* Chrome,Safari4+ */
+    background: -webkit-radial-gradient(center, ellipse cover,  #0264d6 1%,#1c2b5a 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-radial-gradient(center, ellipse cover,  #0264d6 1%,#1c2b5a 100%); /* Opera 12+ */
+    background: -ms-radial-gradient(center, ellipse cover,  #0264d6 1%,#1c2b5a 100%); /* IE10+ */
+    background: radial-gradient(ellipse at center,  #0264d6 1%,#1c2b5a 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0264d6', endColorstr='#1c2b5a',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+    height:calc(100vh);
+    width:100%;
+    }
+    </style>
+</head>
+<body class="text-center">
+  <!--Nav bar-->
+  <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand"><b>Chat App</b></a>
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search Users.." aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      <b>{{Username}}</b>
+    </form>
+  </nav>
+  <!--End Nav bar-->
+  <br>
+<h1 style="color: wheat;">Connection List</h1>
+
+<!--create this card module on the for loop.-->
+<!--for the location change the location on the onclick.href=('')-->
+
+<!--Connection users-->
+  {% for nameList in connectedList %}
+  <div class="card" style="width: 12rem;margin:10px; float: left; padding: 20px;" onclick="location.href='signin.html';" style="cursor: pointer;">
+    <div class="card-body">
+      <p class="card-text">{{nameList}}</p>
+    </div>
+  </div>
+  {% endfor %}
+<!--End Connection users-->
+  
+</body>
+</html>
