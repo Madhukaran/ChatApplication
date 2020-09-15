@@ -20,6 +20,7 @@ my_username = 'ChatAPP'
 client = MongoClient('mongodb://localhost:27017/')
 db = client.loginDetail
 data = db['loginCredential']
+message = db['messages']
 
 def checkUserExist(username):
     if data.find({"username":username}).count() > 0:
@@ -91,6 +92,7 @@ def signUpPost():
     else:
         return render_template('signUp.html',errno='Enter username already exist. Try different user name')
 
+#sending message from the user to the other user
 def sendMessage(otherUser,sendingMessage):
     HEADER_LENGTH = 10
     Tomessage, message = otherUser, sendingMessage
@@ -114,7 +116,18 @@ def mainChatPage():
     sendingMessage = parsed_data['message']
     print(f' the recevied other username {otherUser} and the message {sendingMessage}')
     
+    #sending message to the user
     sendMessage(otherUser, sendingMessage)
+
+    #Storing Messages
+    message.insert({'from':my_username, 'To':otherUser, 'Message':sendingMessage})
+    print("message inserted")
+
+    #retrieving messages
+    for fetch in message.find():
+        get = fetch
+
+
 
     # Receive our "header" containing pickle length, it's size is defined and constant
     pickleHeader = client_socket.recv(HEADER_LENGTH)
@@ -151,7 +164,7 @@ def mainChatPage():
     
         
     print('executing the main page html')
-    return render_template("testing_chat_module.html",tag = connectionList,message = mess,username = my_username,otherUser = otherUser)
+    return render_template("testing_chat_module.html",tag = connectionList,message = get,username = my_username,otherUser = otherUser)
 
 
 

@@ -73,12 +73,8 @@
           <h1 style="position:fixed;z-index: 99;background-color:red;">Message To: {{name}}</h1>
           <div style="position:relative;top:50px">
             {% for msg in message %}
-              {% if message[msg]['name'] == username %}
-                <div class="msg-left">{{message[msg][message]}}</div>
-              {% endif %}
-              {% if message[msg]['name'] == otherUser %}
-                <div class="msg-right">{{message[msg][message]}}</div>
-              {% endif %}
+                <div class="msg-left">{{ msg }}</div>
+                <div class="msg-right">{{ msg }}</div>
             {% endfor %}
           </div>
           <!-- form control-->
