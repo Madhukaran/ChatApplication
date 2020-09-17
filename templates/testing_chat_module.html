@@ -14,22 +14,32 @@
   var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 </script>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
   var intervalID = setInterval(update_values,5000);
   
     function update_values() {
           $.getJSON($SCRIPT_ROOT + '/_update',
                  
         function(data) {
-          console.log(data.pack)
-          if (data.pack['from'] == '{{ username }}' && data.pack['To'] == '{{ name }}')
-          {
-                console.log(data.pack['Message'])
+          var message = data.pack
+          var iterator = message.values();
+          var container = document.getElementById("#message")
+          jQuery('#message').html('');
+          for (let elements of iterator) {
+            // console.log(elements['Message'])
+            if (elements['from'] == '{{ username }}' ){
+              container.innerHTML += '<div class="msg-left">'+ elements[message] +'</div>';
+            }
+            else{
+              container.innerHTML += '<div class="msg-right">'+ elements[message] +'</div>';
+            }
+            // console.log(elements)
+            // container.innerHTML += '';
           }
         });
         
       };
-  </script>
+  </script> -->
 
 <style>
       .msg-right{
@@ -97,8 +107,13 @@
           <h1 style="position:fixed;z-index: 99;background-color:red;">Message To: {{name}}</h1>
           <div id="message" style="position:relative;top:50px">
             {% for msg in message %}
-                <div class="msg-left">{{ msg }}</div>
-                <div class="msg-right">{{ msg }}</div>
+              {% for key, value in msg.items() %}
+                {% if key == "Right" %}
+                  <div class="msg-right">{{ value }}</div>
+                {% else %}
+                  <div class="msg-left">{{ value }}</div>
+                {% endif %}
+              {% endfor %}
             {% endfor %}
           </div>
           <!-- form control-->

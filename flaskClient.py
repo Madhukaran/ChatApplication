@@ -41,12 +41,12 @@ def firstPageFun():
 
 @app.route('/', methods=['POST'])
 def newFunc():
-    print('post of the login page is executed')
+    # print('post of the login page is executed')
     # getting the input
     username = request.form['username']
     passw = request.form['password']
-    print(username)
-    print(passw)
+    # print(username)
+    # print(passw)
     global my_username
     # checking the user already exist or not
     if checkUserExist(username):
@@ -60,7 +60,7 @@ def newFunc():
             username_header = f"{len(username):<{HEADER_LENGTH}}".encode('utf-8')
             # sending the username in bytes format
             client_socket.send(username_header + username)
-            print(' userName sended to server ')
+            # print(' userName sended to server ')
             return redirect(url_for('mainChatPage'))
         else:
             errno = 'Invalid username or Password. Check Your username and password'
@@ -77,11 +77,11 @@ def signUp():
 #
 @app.route('/signUp',methods=['POST'])
 def signUpPost():
-    print('post method of sign up is executed')
+    # print('post method of sign up is executed')
     username = request.form['username']
     passw = request.form['password']
-    print(username)
-    print(passw)
+    # print(username)
+    # print(passw)
     # checking the user is already exist or not
     if not checkUserExist(username):
         # encrypting the password
@@ -109,8 +109,13 @@ def sendMessage(otherUser,sendingMessage):
 #Retrieving the messages from the database
 def fetchMessage():
     mess = []
-    for x in message.find({},{"_id":0}):
-        mess.append(x['Message'])
+    for x in message.find({}, {"_id":0}):
+        if x['from'] == my_username:
+            temp = {"Right": x['Message']}
+            mess.append(temp)
+        else:
+            temp = {"Left": x['Message']}
+            mess.append(temp)
 
     return mess
 
@@ -121,17 +126,17 @@ def update():
     for y in message.find({}, {"_id":0}):
         sess.append(y)
         
-    return jsonify(pack = sess[-1])
+    return jsonify(pack = sess)
 
 @app.route('/mainChatPage', methods=['GET','POST'])
 def mainChatPage():
-    print('the main page endpoint executed')
+    # print('the main page endpoint executed')
     parser.add_argument("Toname", help="id is requied", required=False)
     parser.add_argument("message", help="message is required", required=False)
     parsed_data = parser.parse_args()
     otherUser = parsed_data['Toname']
     sendingMessage = parsed_data['message']
-    print(f' the recevied other username {otherUser} and the message {sendingMessage}')
+    # print(f' the recevied other username {otherUser} and the message {sendingMessage}')
     
     #sending message to the user
     sendMessage(otherUser, sendingMessage)
@@ -150,10 +155,10 @@ def mainChatPage():
 
     # Receive our "header" containing pickle length, it's size is defined and constant
     pickleHeader = client_socket.recv(HEADER_LENGTH)
-    print(f'recevied pickle header value {pickleHeader}')
+    # print(f'recevied pickle header value {pickleHeader}')
     # If we received no data, server gracefully closed a connection, for example using socket.close() or socket.shutdown(socket.SHUT_RDWR)
     if not len(pickleHeader):
-        print('Connection closed by the server')
+        # print('Connection closed by the server')
         return 'Connection closed by the server'
 
     # Convert header to int value
@@ -161,28 +166,28 @@ def mainChatPage():
 
     # Receive pickle file
     pickleFile = client_socket.recv(pickleLength)
-    print(f'recevied pickle file {pickleFile}')
+    # print(f'recevied pickle file {pickleFile}')
     #load the pickle file
     connectionList = pickle.loads(pickleFile)
-    print('pickle is loaded')
+    # print('pickle is loaded')
     # removing the current user name
     connectionList.remove(my_username)
     mess = {}
-    print('retriving data from mongodb')
+    # print('retriving data from mongodb')
     if otherUser != None:
-        print("test:Usercheck")
+        # print("test:Usercheck")
         # retriving the user and the sender data and sorting based on the time and updating the one dictionary
         for i, j in zip(client[my_username][otherUser].find({}, {'_id': 0}),client[otherUser][my_username].find({}, {'_id': 0})):
-            print('retrived data')
+            # print('retrived data')
             mess.update(j)
             mess.update(i)
         print(mess)
         mess = dict(sorted(mess.items(), key=lambda t: t[0]))
 
-        print(f'the connection list {connectionList}')
+        # print(f'the connection list {connectionList}')
     
         
-    print('executing the main page html')
+    # print('executing the main page html')
     return render_template("testing_chat_module.html",tag = connectionList,message = flask_msg,username = my_username,otherUser = otherUser)
 
 

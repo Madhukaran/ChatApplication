@@ -15,7 +15,7 @@ PORT = 1234
 
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-print(server_socket)
+# print(server_socket)
 # seeting the option for the socket
 server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
@@ -138,7 +138,7 @@ def receive_messageWithHeader(client_socket):
 # 							{str(int(time.time())): {'message': message["data"].decode("utf-8"),'name': user["data"].decode('utf-8')}})
 
 def on_new_client(notified_socket,userName,clients):
-	print('first thread open sucessufully')
+	# print('first thread open sucessufully')
 	while True:
 		# print('going to select socket')
 		# read_sockets, _, exception_sockets = select.select(sockets_list, [], sockets_list)
@@ -150,23 +150,23 @@ def on_new_client(notified_socket,userName,clients):
 
 		# If notified socket is a server socket - new connection, accept it
 		if notified_socket != server_socket:
-			print('execute else part')
+			# print('execute else part')
 			listMess = pickle.dumps(userName)
-			print('pickle file dumped')
+			# print('pickle file dumped')
 			headerList = f"{len(listMess):<{HEADER_LENGTH}}".encode('utf-8')
-			print('pickle file header created')
+			# print('pickle file header created')
 			for client_socket in clients:
-				print(f'looping the scoket {client_socket}')
+				# print(f'looping the scoket {client_socket}')
 				# if client_socket != notified_socket:
-				print(f'sending pickle to socket {client_socket}')
+				# print(f'sending pickle to socket {client_socket}')
 				client_socket.send(headerList + listMess)
-				print(f'sended pickle file to scoket {client_socket} and the message is {headerList + listMess}')
+				# print(f'sended pickle file to scoket {client_socket} and the message is {headerList + listMess}')
 				# Receive message
 			message = receive_messageWithHeader(notified_socket)
 
 			# If False, client disconnected, cleanup
 			if message is False:
-				print('Closed connection from: {}'.format(clients[notified_socket]['data'].decode('utf-8')))
+				# print('Closed connection from: {}'.format(clients[notified_socket]['data'].decode('utf-8')))
 
 				# Remove from list for socket.socket()
 				sockets_list.remove(notified_socket)
@@ -179,10 +179,15 @@ def on_new_client(notified_socket,userName,clients):
 			# Get user by notified socket, so we will know who sent the message
 			user = clients[notified_socket]
 
-			print(f'Received message from {user["data"].decode("utf-8")}: {message["data"].decode("utf-8")}')
+			# print(f'Received message from {user["data"].decode("utf-8")}: {message["data"].decode("utf-8")}')
 
 			# data.insert({user["data"].decode("utf-8"):message["data"].decode("utf-8")})
-			print(message)
+			# print(message["data"].decode("utf-8"))
+			# msg = message["data"]
+			# print(client_address)
+			# server_socket.connect(client_address)
+			# server_socket.sendto(msg,client_address)
+
 
 			for i in databaseDict:
 				if i == user["data"].decode('utf-8'):
@@ -216,11 +221,11 @@ while True:
 				# That gives us new socket - client socket, connected to this given client only, it's unique for that client
 				# The other returned object is ip/port set
 				client_socket, client_address = server_socket.accept()
-				print(f'connection got from {client_address}')
+				# print(f'connection got from {client_address}')
 
 				# Client should send his name right away, receive it
 				user = receive_message(client_socket)
-				print(f'username got to server {user}')
+				# print(f'username got to server {user}')
 
 				# If False - client disconnected before he sent his name
 				if user is False:
@@ -234,9 +239,9 @@ while True:
 				# Also save username and username header
 				clients[client_socket] = user
 
-				print('Accepted new connection from {}:{}, username: {}'.format(*client_address,
-																				user['data'].decode('utf-8')))
-				print(f'socket list {sockets_list}')
+				# print('Accepted new connection from {}:{}, username: {}'.format(*client_address,
+																				# user['data'].decode('utf-8')))
+				# print(f'socket list {sockets_list}')
 
 				threading._start_new_thread(on_new_client,(client_socket,userName,clients))
 	except KeyboardInterrupt:

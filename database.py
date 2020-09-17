@@ -20,10 +20,24 @@ messages = db['messages']
     
 # if __name__ == '__main__':
 #     app.run()
+my_username = "beast"
+otheruser = "madhu"
 
 mess = []
 for x in messages.find({}, {"_id":0}):
-    mess.append(x)
+    if x['from'] == my_username:
+        temp = {"Right": x['Message']}
+        mess.append(temp)
+    else:
+        temp = {"Left": x['Message']}
+        mess.append(temp)
 
+for data in mess:
+    for key,value in data.items():
+        if key == "Right":
+            print(value)
+        else:
+            print(value)
+        
 
-print(mess[-1])
+print(len(mess))
