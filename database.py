@@ -9,7 +9,7 @@ import random
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client.loginDetail
-data = db['loginCredential']
+users = db['loginCredential']
 messages = db['messages']
 
 # @app.route('/')
@@ -38,6 +38,12 @@ for data in mess:
             print(value)
         else:
             print(value)
-        
 
 print(len(mess))
+
+active_user = []
+for p in users.find({}, {"_id":0}):
+    active_user.append(p['username'])
+
+print(active_user)
+

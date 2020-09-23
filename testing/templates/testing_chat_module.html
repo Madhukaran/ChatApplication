@@ -24,6 +24,7 @@
           var _user = data.user
           var iterator = _user.values();
           var container = document.getElementById("v-pills-tab")
+          jQuery('#v-pills-tab').html('');
           for (let elements of iterator) {
             container.innerHTML += '<a class="nav-link" style="width: 100%;" id="v-pills-profile-tab" data-toggle="pill" href="#'+ elements +'-tab" role="tab" aria-controls="v-pills-profile" aria-selected="false">'+ elements +'</a>';
           }

@@ -14,32 +14,33 @@
   var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 </script>
 
-<!-- <script type="text/javascript">
-  var intervalID = setInterval(update_values,5000);
+<script type="text/javascript">
+  var intervalID = setInterval(update_values,500);
   
     function update_values() {
           $.getJSON($SCRIPT_ROOT + '/_update',
                  
         function(data) {
-          var message = data.pack
-          var iterator = message.values();
-          var container = document.getElementById("#message")
+          // console.log(data.user)
+          var _msg = data.message
+          var iterator = _msg.values();
+          var container = document.getElementById("message")
           jQuery('#message').html('');
-          for (let elements of iterator) {
-            // console.log(elements['Message'])
-            if (elements['from'] == '{{ username }}' ){
-              container.innerHTML += '<div class="msg-left">'+ elements[message] +'</div>';
+          for (let elements of iterator){
+            if (elements.Left){
+              container.innerHTML += '<div class="msg-left">'+ elements.Left +'</div>';
             }
             else{
-              container.innerHTML += '<div class="msg-right">'+ elements[message] +'</div>';
+              container.innerHTML += '<div class="msg-right">'+ elements.Right +'</div>';
             }
-            // console.log(elements)
-            // container.innerHTML += '';
           }
+          // for (let elements of iterator) {
+          //   container.innerHTML += '<a class="nav-link" style="width: 100%;" id="v-pills-profile-tab" data-toggle="pill" href="#'+ elements +'-tab" role="tab" aria-controls="v-pills-profile" aria-selected="false">'+ elements +'</a>';
+          // }
         });
         
       };
-  </script> -->
+  </script>
 
 <style>
       .msg-right{
@@ -106,7 +107,7 @@
         <div class="tab-pane fade " id="{{name}}-tab" role="tabpanel" aria-labelledby="v-pills-home-tab" style="overflow: scroll;width:100% ;height: 600px;">
           <h1 style="position:fixed;z-index: 99;background-color:red;">Message To: {{name}}</h1>
           <div id="message" style="position:relative;top:50px">
-            {% for msg in message %}
+            <!-- {% for msg in message %}
               {% for key, value in msg.items() %}
                 {% if key == "Right" %}
                   <div class="msg-right">{{ value }}</div>
@@ -114,7 +115,7 @@
                   <div class="msg-left">{{ value }}</div>
                 {% endif %}
               {% endfor %}
-            {% endfor %}
+            {% endfor %} -->
           </div>
           <!-- form control-->
           <!-- here its automatically parse the arguments when the submit button is clicked with the user details  through the hidden form field-->

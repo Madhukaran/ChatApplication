@@ -125,8 +125,10 @@ def update():
     sess = []
     for y in message.find({}, {"_id":0}):
         sess.append(y)
+
+    toto = fetchMessage()
         
-    return jsonify(pack = sess)
+    return jsonify(pack = sess, message = toto)
 
 @app.route('/mainChatPage', methods=['GET','POST'])
 def mainChatPage():
